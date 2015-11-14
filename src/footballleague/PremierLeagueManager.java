@@ -6,9 +6,9 @@ import java.util.Scanner;
 
 //@author Maria Bartoszuk
 
-public class PremierLeagueManager {
+public class PremierLeagueManager implements LeagueManager {
     
-    List<FootballClub> clubsInPremierLeague = new ArrayList<>();
+    ArrayList<FootballClub> clubsInPremierLeague = new ArrayList<>();
     Scanner input = new Scanner(System.in);
     
     public void menu() {
@@ -16,6 +16,8 @@ public class PremierLeagueManager {
             + "\nEnter A to Add a new club"
             + "\nEnter D to Display statistics of a specific club"
             + "\nEnter R to Remove an existing club"
+            + "\nEnter M to Add a played match"
+            + "\nEnter T to Display the league table"
             + "\nEnter Q to Quit the program");
         
         boolean quit = false;
@@ -28,6 +30,10 @@ public class PremierLeagueManager {
                 case "D": this.displayClubStats();
                           break;
                 case "R": this.removeFootballClub();
+                          break;
+                case "M": this.addMatch();
+                          break;
+                case "T": this.displayLeagueTable();
                           break;
                 case "Q": quit = true;
                           break;
@@ -76,6 +82,35 @@ public class PremierLeagueManager {
             this.clubsInPremierLeague.remove(club);
             System.out.println(club + " was deleted from the league.");
         }
+    }
+
+    public void addMatch() {
+        System.out.println("Enter the name of the first club: ");
+        FootballClub firstClub = findClubByName(input.next());
+        if (firstClub == null) {
+            System.out.println("Requested club does not exist in this league.");
+            return;
+        }
+        System.out.println("Enter the number of goals scored by this team: ");
+        int firstGoalsScored = input.nextInt();
+        
+        System.out.println("Enter the name of the second club: ");
+        FootballClub secondClub = findClubByName(input.next());
+        if (secondClub == null) {
+            System.out.println("Requested club does not exist in this league.");
+            return;
+        }
+        System.out.println("Enter the number of goals scored by this team: ");
+        int secondGoalsScored = input.nextInt();
+        
+        Match match = new Match(firstClub, secondClub);
+        match.addResults(firstGoalsScored, secondGoalsScored);
+    }
+    
+    public void displayLeagueTable() {
+        Table table = new Table(clubsInPremierLeague);
+        table.sortByScore();
+        table.display();
     }
     
     public static void main(String [] args) {
