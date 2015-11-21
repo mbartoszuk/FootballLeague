@@ -1,5 +1,6 @@
 package footballleague;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class PremierLeagueManager implements LeagueManager {
     
     ArrayList<FootballClub> clubsInPremierLeague = new ArrayList<>();
     Scanner input = new Scanner(System.in);
+    ArrayList<Match> matches = new ArrayList<>();
     
     public void menu() {
         System.out.println("Please choose from the following options: "
@@ -107,8 +109,12 @@ public class PremierLeagueManager implements LeagueManager {
         System.out.println("Enter the number of goals scored by this team: ");
         int secondGoalsScored = input.nextInt();
         
-        Match match = new Match(firstClub, secondClub);
+        System.out.println("Enter the date when this match took place (yyyy-mm-dd): ");
+        String date = input.next();
+        
+        Match match = new Match(firstClub, secondClub, date);
         match.addResults(firstGoalsScored, secondGoalsScored);
+        matches.add(match);
     }
     
     public void displayLeagueTable() {
@@ -121,9 +127,24 @@ public class PremierLeagueManager implements LeagueManager {
         System.out.println("Enter the year to display the league calendar for: ");
         int year = input.nextInt();
         System.out.println("Now enter the month of that year: ");
-        String month = input.next();
-        Calendar calendar = new Calendar(Month.valueOf(month.toUpperCase()), year);
+        Month month = Month.valueOf(input.next().toUpperCase());
+        Calendar calendar = new Calendar(month, year);
+        System.out.println();
         System.out.println(calendar);
+        System.out.println("Enter the day of the month above to see the matches taking place: ");
+        int day = input.nextInt();
+        
+        LocalDate chosenDate = LocalDate.of(year, month, day);
+        boolean matchesWereDisplayed = false;
+        for (Match match:matches) {
+            if(chosenDate.equals(match.getDate())) {
+                System.out.println(match);
+                matchesWereDisplayed = true;
+            }
+        }
+        if(matchesWereDisplayed == false) {
+            System.out.println("No matches were played on this day.");
+        }
     }
     
     public static void main(String [] args) {

@@ -1,13 +1,20 @@
 package footballleague;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 class Match {
 
     FootballClub firstClub;
     FootballClub secondClub;
+    int firstScore;
+    int secondScore;
+    LocalDate date;
     
-    Match(FootballClub firstClub, FootballClub secondClub) {
+    Match(FootballClub firstClub, FootballClub secondClub, String date) {
         this.firstClub = firstClub;
         this.secondClub = secondClub;
+        this.date = LocalDate.parse(date);
     }
 
     public void addResults(int firstGoalsScored, int secondGoalsScored) {
@@ -27,5 +34,17 @@ class Match {
             firstClub.logADefeat();
             secondClub.logAWin();
         }
+        
+        this.firstScore = firstGoalsScored;
+        this.secondScore = secondGoalsScored;
+    }
+    
+    public LocalDate getDate() {
+        return date;
+    }
+    
+    public String toString() {
+        return this.firstClub.getName() + " - " + this.secondClub.getName() +
+                " " + this.firstScore + " : " + this.secondScore;
     }
 }
