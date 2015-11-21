@@ -1,5 +1,6 @@
 package footballleague;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +19,7 @@ public class PremierLeagueManager implements LeagueManager {
             + "\nEnter R to Remove an existing club"
             + "\nEnter M to Add a played match"
             + "\nEnter T to Display the league table"
+            + "\nEnter C to Display the league calendar"
             + "\nEnter Q to Quit the program");
         
         boolean quit = false;
@@ -34,6 +36,8 @@ public class PremierLeagueManager implements LeagueManager {
                 case "M": this.addMatch();
                           break;
                 case "T": this.displayLeagueTable();
+                          break;
+                case "C": this.displayCalendar();
                           break;
                 case "Q": quit = true;
                           break;
@@ -111,6 +115,15 @@ public class PremierLeagueManager implements LeagueManager {
         Table table = new Table(clubsInPremierLeague);
         table.sortByScore();
         table.display();
+    }
+    
+    public void displayCalendar() {
+        System.out.println("Enter the year to display the league calendar for: ");
+        int year = input.nextInt();
+        System.out.println("Now enter the month of that year: ");
+        String month = input.next();
+        Calendar calendar = new Calendar(Month.valueOf(month.toUpperCase()), year);
+        System.out.println(calendar);
     }
     
     public static void main(String [] args) {
